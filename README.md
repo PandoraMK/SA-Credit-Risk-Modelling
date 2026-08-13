@@ -1,9 +1,5 @@
 # South African Retail Credit Risk & Default Probability Pipeline
 
-![Python](https://img.shields.io/badge/Python-3.11-blue.svg)
-![Domain](https://img.shields.io/badge/Domain-Credit%20Risk%20%26%20Retail%20Finance-green)
-![Toolkit](https://img.shields.io/badge/Toolkit-Pandas%20%7C%20NumPy%20%7C%20Scikit--Learn%20%7C%20SHAP-orange)
-
 ## Executive Summary
 This project simulates an end-to-end quantitative credit risk scoring engine tailored to the South African retail credit landscape. Using synthetic demographic and financial data calibrated against TransUnion credit score bounds, South African National Credit Act (NCA) Debt-to-Income (DTI) metrics, and SASSA grant indicators, this pipeline models non-performing loans (NPLs) and assesses applicant default probabilities using logistic log-odds risk modelling and SHAP (SHapley Additive exPlanations) for model explainability.
 
