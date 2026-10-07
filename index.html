@@ -18,7 +18,7 @@
                 <div class="bg-blue-600 text-white p-2 rounded-lg font-bold text-xl">ZAR</div>
                 <div>
                     <h1 class="text-lg font-bold text-slate-800">South African Retail Credit Engine</h1>
-                    <p class="text-xs text-slate-500">Model: Random Forest / Logistic Risk Scoring (NPL Tracking)</p>
+                    <p class="text-xs text-slate-500">Individual & Provincial Risk Analysis Module</p>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
@@ -33,27 +33,23 @@
     <!-- Main Content Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <!-- KPI Summary Cards -->
+        <!-- Global KPI Summary Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <!-- Card 1 -->
             <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Portfolio NPL Ratio</p>
                 <p class="text-2xl font-extrabold text-rose-600 mt-2">16.96%</p>
                 <span class="text-xs text-slate-500 mt-1 inline-block">Non-Performing Loans</span>
             </div>
-            <!-- Card 2 -->
             <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Simulated Base</p>
                 <p class="text-2xl font-extrabold text-slate-800 mt-2">10,000</p>
                 <span class="text-xs text-emerald-600 mt-1 inline-block">Profiles Generated</span>
             </div>
-            <!-- Card 3 -->
             <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Avg Bureau Score</p>
                 <p class="text-2xl font-extrabold text-slate-800 mt-2">618 pts</p>
                 <span class="text-xs text-slate-500 mt-1 inline-block">TransUnion Scale</span>
             </div>
-            <!-- Card 4 -->
             <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                 <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Median Monthly Income</p>
                 <p class="text-2xl font-extrabold text-blue-600 mt-2">R 10,420</p>
@@ -61,16 +57,79 @@
             </div>
         </div>
 
+        <!-- Interactive Drill-Down Section Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+
+            <!-- MODULE 1: Individual Client Lookup -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-slate-800 mb-2">🔍 Individual Client Risk Lookup</h3>
+                    <p class="text-xs text-slate-500 mb-4">Search by Client ID (e.g., CAP00001, CAP00004, CAP00010) to inspect applicant scorecards.</p>
+                    
+                    <div class="flex space-x-2 mb-4">
+                        <input type="text" id="clientSearchInput" placeholder="Enter Client ID (e.g., CAP00001)" class="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button onclick="searchClient()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition">Search</button>
+                    </div>
+
+                    <!-- Client Result Display Box -->
+                    <div id="clientResultBox" class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-sm space-y-2">
+                        <p class="text-slate-400 text-xs italic">Enter an ID above to load applicant details...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 2: Provincial Performance Drill-down -->
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-slate-800 mb-2">📍 Provincial Performance Drill-Down</h3>
+                    <p class="text-xs text-slate-500 mb-4">Select a South African province to evaluate local NPL rates and credit health.</p>
+
+                    <div class="mb-4">
+                        <select id="provinceSelect" onchange="updateProvinceStats()" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            <option value="Gauteng">Gauteng (26% share)</option>
+                            <option value="KwaZulu-Natal">KwaZulu-Natal (19% share)</option>
+                            <option value="Western Cape">Western Cape (12% share)</option>
+                            <option value="Eastern Cape">Eastern Cape (11% share)</option>
+                            <option value="Limpopo">Limpopo (10% share)</option>
+                            <option value="Mpumalanga">Mpumalanga (8% share)</option>
+                            <option value="North West">North West (7% share)</option>
+                            <option value="Free State">Free State (5% share)</option>
+                            <option value="Northern Cape">Northern Cape (2% share)</option>
+                        </select>
+                    </div>
+
+                    <!-- Provincial Metric Cards Grid -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-xs text-slate-400 uppercase font-semibold">Provincial NPL Rate</p>
+                            <p id="provNpl" class="text-lg font-bold text-rose-600 mt-1">17.20%</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-xs text-slate-400 uppercase font-semibold">Avg Bureau Score</p>
+                            <p id="provScore" class="text-lg font-bold text-slate-800 mt-1">622 pts</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-xs text-slate-400 uppercase font-semibold">Avg Monthly Income</p>
+                            <p id="provIncome" class="text-lg font-bold text-blue-600 mt-1">R 11,250</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <p class="text-xs text-slate-400 uppercase font-semibold">Active Portfolios</p>
+                            <p id="provVolume" class="text-lg font-bold text-slate-800 mt-1">2,600</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <!-- Charts Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <!-- Chart 1: Provincial Exposure -->
             <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                 <h3 class="text-base font-bold text-slate-800 mb-4">Applicant Distribution by Province</h3>
                 <div class="relative h-72">
                     <canvas id="provinceChart"></canvas>
                 </div>
             </div>
-            <!-- Chart 2: Employment Type & Default Exposure -->
             <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                 <h3 class="text-base font-bold text-slate-800 mb-4">Employment Segment Breakdown</h3>
                 <div class="relative h-72">
@@ -79,63 +138,75 @@
             </div>
         </div>
 
-        <!-- Sample Client Portfolio Table -->
-        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                <h3 class="text-base font-bold text-slate-800">Simulated South African Applicant Sample</h3>
-                <button class="text-xs bg-blue-50 text-blue-600 font-semibold px-3 py-1.5 rounded-lg hover:bg-blue-100 transition">Export CSV</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-wider font-semibold">
-                            <th class="py-3 px-6">Client ID</th>
-                            <th class="py-3 px-6">Province</th>
-                            <th class="py-3 px-6">Employment</th>
-                            <th class="py-3 px-6">Monthly Income (ZAR)</th>
-                            <th class="py-3 px-6">Credit Score</th>
-                            <th class="py-3 px-6">DTI Ratio</th>
-                            <th class="py-3 px-6">Default Status (NPL)</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-200 text-sm text-slate-700">
-                        <tr>
-                            <td class="py-4 px-6 font-medium text-slate-900">CAP00001</td>
-                            <td class="py-4 px-6">Gauteng</td>
-                            <td class="py-4 px-6">Self-Employed</td>
-                            <td class="py-4 px-6">R 11,517.19</td>
-                            <td class="py-4 px-6 font-semibold text-slate-800">630</td>
-                            <td class="py-4 px-6">0.3458</td>
-                            <td class="py-4 px-6"><span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800">Repaying (0)</span></td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 font-medium text-slate-900">CAP00004</td>
-                            <td class="py-4 px-6">Eastern Cape</td>
-                            <td class="py-4 px-6">Unemployed (SASSA)</td>
-                            <td class="py-4 px-6">R 3,026.21</td>
-                            <td class="py-4 px-6 font-semibold text-rose-600">451</td>
-                            <td class="py-4 px-6">0.1333</td>
-                            <td class="py-4 px-6"><span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-rose-100 text-rose-800">Default (1)</span></td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 font-medium text-slate-900">CAP00010</td>
-                            <td class="py-4 px-6">KwaZulu-Natal</td>
-                            <td class="py-4 px-6">Unemployed</td>
-                            <td class="py-4 px-6">R 911.08</td>
-                            <td class="py-4 px-6 font-semibold text-rose-600">397</td>
-                            <td class="py-4 px-6">0.1420</td>
-                            <td class="py-4 px-6"><span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-rose-100 text-rose-800">Default (1)</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </main>
 
-    <!-- Chart Configuration Script -->
+    <!-- Embedded Script for Interactivity & Charts -->
     <script>
-        // Provincial Distribution Chart
+        // Mock Database of Client Profiles matching your Python generation logic
+        const clientDatabase = {
+            "CAP00001": { id: "CAP00001", age: 56, gender: "Female", province: "Gauteng", group: "White", emp: "Self-Employed", income: 11517.19, score: 630, dti: 0.3458, default: 0 },
+            "CAP00002": { id: "CAP00002", age: 69, gender: "Male", province: "Mpumalanga", group: "Black", emp: "Formal Sector", income: 16214.92, score: 711, dti: 0.0962, default: 0 },
+            "CAP00003": { id: "CAP00003", age: 46, gender: "Male", province: "Eastern Cape", group: "Black", emp: "Formal Sector", income: 18688.00, score: 792, dti: 0.2841, default: 0 },
+            "CAP00004": { id: "CAP00004", age: 32, gender: "Female", province: "Eastern Cape", group: "Black", emp: "Unemployed", income: 3026.21, score: 451, dti: 0.1333, default: 1 },
+            "CAP00005": { id: "CAP00005", age: 60, gender: "Male", province: "North West", group: "Black", emp: "Formal Sector", income: 5172.87, score: 658, dti: 0.4310, default: 0 },
+            "CAP00010": { id: "CAP00010", age: 40, gender: "Female", province: "KwaZulu-Natal", group: "White", emp: "Unemployed", income: 911.08, score: 397, dti: 0.1420, default: 1 }
+        };
+
+        // Provincial Aggregated Stats Database
+        const provinceStatsData = {
+            "Gauteng": { npl: "15.40%", score: "632 pts", income: "R 12,400", volume: "2,600" },
+            "KwaZulu-Natal": { npl: "18.10%", score: "608 pts", income: "R 9,850", volume: "1,900" },
+            "Western Cape": { npl: "13.20%", score: "655 pts", income: "R 13,900", volume: "1,200" },
+            "Eastern Cape": { npl: "19.50%", score: "594 pts", income: "R 8,400", volume: "1,100" },
+            "Limpopo": { npl: "20.10%", score: "582 pts", income: "R 7,900", volume: "1,000" },
+            "Mpumalanga": { npl: "17.80%", score: "610 pts", income: "R 9,600", volume: "800" },
+            "North West": { npl: "18.60%", score: "601 pts", income: "R 8,900", volume: "700" },
+            "Free State": { npl: "16.90%", score: "615 pts", income: "R 9,500", volume: "500" },
+            "Northern Cape": { npl: "14.50%", score: "640 pts", income: "R 10,800", volume: "200" }
+        };
+
+        // Function to Handle Individual Client Search
+        function searchClient() {
+            const query = document.getElementById('clientSearchInput').value.trim().toUpperCase();
+            const box = document.getElementById('clientResultBox');
+
+            if (clientDatabase[query]) {
+                const c = clientDatabase[query];
+                const statusBadge = c.default === 1 
+                    ? '<span class="px-2 py-0.5 text-xs font-semibold rounded bg-rose-100 text-rose-800">Default (1 - High Risk)</span>'
+                    : '<span class="px-2 py-0.5 text-xs font-semibold rounded bg-emerald-100 text-emerald-800">Repaying (0 - Low Risk)</span>';
+
+                box.innerHTML = `
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-1">
+                        <span class="font-bold text-slate-800">${c.id} (${c.gender}, Age ${c.age})</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                        <div>Province: <span class="font-semibold text-slate-700">${c.province}</span></div>
+                        <div>Employment: <span class="font-semibold text-slate-700">${c.emp}</span></div>
+                        <div>Monthly Income: <span class="font-semibold text-blue-600">R ${c.income.toLocaleString()}</span></div>
+                        <div>Bureau Score: <span class="font-semibold text-slate-700">${c.score} pts</span></div>
+                        <div>Debt-to-Income: <span class="font-semibold text-slate-700">${c.dti}</span></div>
+                        <div>Population Group: <span class="font-semibold text-slate-700">${c.group}</span></div>
+                    </div>
+                `;
+            } else {
+                box.innerHTML = `<p class="text-rose-500 text-xs font-medium">Client ID "${query}" not found in local sample. Try CAP00001, CAP00004, or CAP00010.</p>`;
+            }
+        }
+
+        // Function to Handle Provincial Drill-Down Updates
+        function updateProvinceStats() {
+            const selectedProv = document.getElementById('provinceSelect').value;
+            const stats = provinceStatsData[selectedProv];
+
+            document.getElementById('provNpl').innerText = stats.npl;
+            document.getElementById('provScore').innerText = stats.score;
+            document.getElementById('provIncome').innerText = stats.income;
+            document.getElementById('provVolume').innerText = stats.volume;
+        }
+
+        // Initialize Chart.js Visualizations
         const ctxProvince = document.getElementById('provinceChart').getContext('2d');
         new Chart(ctxProvince, {
             type: 'bar',
@@ -159,7 +230,6 @@
             }
         });
 
-        // Employment Type Chart
         const ctxEmp = document.getElementById('employmentChart').getContext('2d');
         new Chart(ctxEmp, {
             type: 'doughnut',
